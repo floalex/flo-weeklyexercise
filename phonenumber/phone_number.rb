@@ -16,7 +16,7 @@ class PhoneNumber
   end
   
   def area_code
-    clean_digits[0,3] 
+    number[0,3] 
   end
   
   def to_s
