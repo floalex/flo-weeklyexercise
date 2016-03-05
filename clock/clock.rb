@@ -20,7 +20,7 @@ class Clock
   end
   
   def ==(other_time)
-      to_s == other_time.to_s
+    to_s == other_time.to_s
   end
   
   def to_s
