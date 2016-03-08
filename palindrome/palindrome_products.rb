@@ -1,10 +1,4 @@
-class PalindromeProduct
-  attr_accessor :value, :factors
-  
-  def initialize
-    @factors = []
-  end
-end
+PalindromeProduct = Struct.new(:value, :factors)
 
 class Palindromes
   attr_accessor :palindromes
@@ -16,18 +10,11 @@ class Palindromes
   end
 
   def generate
-    @palindromes = {} #@palindromes = { 9009 => PalindromeProduct(value: 9009, factors: [[91, 99]])
-    @range.each do |num1|
-      @range.each do |num2|
-        product = num1 * num2
-        if palindrome?(product)
-          pali_product = @palindromes[product] || PalindromeProduct.new
-          pali_product.value = product
-          pali_product.factors << [num1, num2].sort
-          pali_product.factors.uniq!
-          
-          @palindromes[product] = pali_product
-        end
+    @palindromes = Hash.new { |hash, key| hash[key] = [] }  #@palindromes = { 9009 =>  [[91, 99]])
+    @range.to_a.repeated_combination(2) do |num1, num2|
+      product = num1 * num2
+      if palindrome?(product)
+        @palindromes[product] << [num1, num2]
       end
     end
   end
@@ -37,10 +24,18 @@ class Palindromes
   end
   
   def largest
-    @palindromes[@palindromes.keys.max]
+    PalindromeProduct.new(largest_product, @palindromes[largest_product])
   end
   
   def smallest
-    @palindromes[@palindromes.keys.min]
+    PalindromeProduct.new(smallest_product, @palindromes[smallest_product])
+  end
+  
+  def smallest_product
+    @palindromes.keys.min
+  end
+
+  def largest_product
+    @palindromes.keys.max
   end
 end
