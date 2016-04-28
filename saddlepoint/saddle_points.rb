@@ -11,6 +11,7 @@ class Matrix
   def columns
     row_first, *row_other = *rows 
     row_first.zip(*row_other)
+    # alternative: rows.transpose
   end
   
   def saddle_points

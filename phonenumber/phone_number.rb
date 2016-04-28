@@ -1,37 +1,77 @@
+# class PhoneNumber
+#   attr_reader :digits
+  
+#   def initialize(digits)
+#     @digits = digits
+#   end
+  
+#   def number
+#     if clean_digits.size == 10 && !letter
+#       number = clean_digits
+#     elsif (clean_digits.size == 11) && (clean_digits.start_with?('1'))
+#       number = clean_digits.slice(1..-1)
+#     else 
+#       number = '0000000000'
+#     end    
+#   end
+  
+#   def area_code
+#     number[0,3] 
+#   end
+  
+#   def to_s
+#     add_print = number.chars.unshift("(").insert(4, ") ").insert(-5, "-")
+#     add_print.join
+#   end
+  
+#   private 
+  
+#     def clean_digits
+#       digits.delete("()-. ")
+#     end
+    
+#     def letter
+#       clean_digits.downcase.chars.any? { |c| c.between?('a', 'z') }
+#     end
+  
+# end
+
+#20150214
 class PhoneNumber
-  attr_reader :digits
+  attr_reader :number
   
-  def initialize(digits)
-    @digits = digits
-  end
-  
-  def number
-    if clean_digits.size == 10 && !letter
-      number = clean_digits
-    elsif (clean_digits.size == 11) && (clean_digits.start_with?('1'))
-      number = clean_digits.slice(1..-1)
-    else 
-      number = '0000000000'
-    end    
+  def initialize(num)
+    @number = clean(num)
   end
   
   def area_code
-    number[0,3] 
+    number[0..2]
+  end
+  
+  def exchange
+    number[3..5]
+  end
+  
+  def subscriber
+    number[6..9]
   end
   
   def to_s
-    add_print = number.chars.unshift("(").insert(4, ") ").insert(-5, "-")
-    add_print.join
+    "(#{area_code}) #{exchange}-#{subscriber}"
   end
   
-  private 
+  private
   
-    def clean_digits
-      digits.delete("()-. ")
+  def clean(num)
+    return '0' * 10 if num.match(/[a-zA-Z]/)
+    num = num.gsub(/\D/, '')
+    if num.length == 10
+      num
+    elsif num.length == 11 && num.start_with?('1')
+      num[1..10]
+    else
+      '0' * 10
     end
-    
-    def letter
-      clean_digits.downcase.chars.any? { |c| c.between?('a', 'z') }
-    end
+  end
   
 end
