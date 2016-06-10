@@ -27,6 +27,5 @@ class Robot
 			self.class.stored_names << name
 			name
 		end
-		
 	end
 end
